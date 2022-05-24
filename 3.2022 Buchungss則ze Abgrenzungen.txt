@@ -1,0 +1,13 @@
+Buchungsdatum|Belegdatum|Belegart|Belegnr.|Externe Belegnummer|Kontoart|Kontonr.|Beschreibung|Betrag|Projektnummer|Gegenkontonr.|Kostenstelle Code|Projektaufgabennr.|Gegenkontoart|Shortcutdimensionscode 2|Geschäftsbuchungsgruppe|Produktbuchungsgruppe|Projekt Postenart|Zlg.-Bedingungscode|Währungscode|Intercompany Code|MwSt.-Geschäftsbuchungsgruppe|MwSt.-Produktbuchungsgruppe
+31.03.2022|31.03.2022|Rechnung|UA 3.2022 - 1|UA 3.2022 - 1|Sachkonto|4025|UA-KundeA-0001-(Auflösung)|1000|KundeA-0001||1||Sachkonto|KundeA|||||||
+31.03.2022|31.03.2022|Rechnung|UA 3.2022 - 1|UA 3.2022 - 1|Sachkonto|1210|UA-KundeA-0001-(Auflösung)|-1000|KundeA-0001||1||Sachkonto|KundeA|||||||
+31.03.2022|31.03.2022|Rechnung|UA 3.2022 - 2|UA 3.2022 - 2|Sachkonto|4025|UA-KundeB-0002-(Abgrenzung)|-1000|KundeB-0002||2||Sachkonto|KundeB|||||||
+31.03.2022|31.03.2022|Rechnung|UA 3.2022 - 2|UA 3.2022 - 2|Sachkonto|1210|UA-KundeB-0002-(Abgrenzung)|1000|KundeB-0002||2||Sachkonto|KundeB|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 3|PRAP 3.2022 - 3|Sachkonto|4007|PRAP-KundeB-0003-(Auflösung)|-1000|KundeB-0003||1||Sachkonto|KundeB|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 3|PRAP 3.2022 - 3|Sachkonto|1215|PRAP-KundeB-0003-(Auflösung)|1000|KundeB-0003||1||Sachkonto|KundeB|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 4|PRAP 3.2022 - 4|Sachkonto|4007|PRAP-KundeC-0004-(Abgrenzung)|1000|KundeC-0004||1||Sachkonto|KundeC|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 4|PRAP 3.2022 - 4|Sachkonto|1215|PRAP-KundeC-0004-(Abgrenzung)|-1000|KundeC-0004||1||Sachkonto|KundeC|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 5|PRAP 3.2022 - 5|Sachkonto|4007|PRAP-KundeD-0005-(Abgrenzung)|3000|KundeD-0005||1||Sachkonto|KundeD|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 5|PRAP 3.2022 - 5|Sachkonto|1215|PRAP-KundeD-0005-(Abgrenzung)|-3000|KundeD-0005||1||Sachkonto|KundeD|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 6|PRAP 3.2022 - 6|Sachkonto|4007|PRAP-KundeE-0006-(Auflösung)|-3000|KundeE-0006||2||Sachkonto|KundeE|||||||
+31.03.2022|31.03.2022|Rechnung|PRAP 3.2022 - 6|PRAP 3.2022 - 6|Sachkonto|1215|PRAP-KundeE-0006-(Auflösung)|3000|KundeE-0006||2||Sachkonto|KundeE|||||||
