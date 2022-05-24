@@ -1,0 +1,201 @@
+'Konstanten
+Public Const KontoForderungPRAP As Integer = 1215
+Public Const KontoForderungPOC As Integer = 1210
+Public Const KontoErloesePRAP As Integer = 4007
+Public Const KontoReinmargeAbgrenzung As Integer = 4025
+Public Const ErstWert As Integer = 8
+
+'Globale Variablen
+Public Monat
+Public Count
+Public Jahr
+Public Bewegung1215
+Public Bewegung1210
+Public Saldo1210
+Public Saldo1215
+Public Filename
+
+
+
+Function Buchungssaetze()
+    
+    'Variablen initialiseren
+    Count = 1
+    Eintrag = ErstWert + Count
+    Monat = Worksheets("Abgrenzung").Cells(3, 3).Value
+    Jahr = Worksheets("Abgrenzung").Cells(2, 3).Value
+    Bewegung1215 = 0
+    Bewegung1210 = 0
+    Saldo1210 = Worksheets("Abgrenzung").Cells(3, Monat + 6).Value
+    Saldo1215 = Worksheets("Abgrenzung").Cells(4, Monat + 6).Value
+    Filename = Monat & "." & Jahr & " Buchungss‰tze Abgrenzungen.txt"
+    
+    'Datei erstellen
+    GenTxt
+    
+    While ListenEnde(Eintrag) = False
+    
+        Betragswert = Worksheets("Abgrenzung").Cells(Eintrag, Monat + 7).Value
+        If Betragswert <> 0 Then
+    
+        Gegenkonto = Worksheets("Abgrenzung").Cells(Eintrag, 6).Value
+        
+            If Gegenkonto = KontoForderungPRAP Then
+                Konto = KontoErloesePRAP
+            Else
+                Konto = KontoReinmargeAbgrenzung
+            End If
+            
+            BuSa1 = Buchungssatz(Eintrag, Konto)
+            BuSa2 = Buchungssatz(Eintrag, Gegenkonto)
+            Debug.Print (BuSa1)
+            Debug.Print (BuSa2)
+            AddLine (BuSa1)
+            AddLine (BuSa2)
+            
+        End If
+        
+        Eintrag = Eintrag + 1
+        Count = Count + 1
+        
+    Wend
+    
+    Debug.Print ("Bewegung auf 1215: " & Round(Bewegung1215, 2))
+    Debug.Print ("Bewegung auf 1210: " & Round(Bewegung1210, 2))
+    Debug.Print ("Neuer Saldo auf 1215: " & Round(Saldo1215 + Bewegung1215 * -1, 2))
+    Debug.Print ("Neuer Saldo auf 1210: " & Round(Saldo1210 + Bewegung1210 * -1, 2))
+     
+End Function
+
+Function ListenEnde(Eintrag)
+    Eintragung = Worksheets("Abgrenzung").Cells(Eintrag, 1).Value
+    If Eintragung <> 0 Then
+        ListenEnde = False
+    Else
+        ListenEnde = True
+    End If
+End Function
+
+Function Buchungssatz(Eintrag, Konto)
+
+    Buchungsdatum = Worksheets("Abgrenzung").Cells(4, 3).Value & "|"
+    Belegdatum = Buchungsdatum
+    Belegart = "Rechnung|"
+    BelegNr = Belegnummer(Eintrag) & "|"
+    ExtBelegNr = BelegNr
+    Kontoart = "Sachkonto|"
+    KontoNr = Konto & "|"
+    Beschreibungstext = Beschreibung(Eintrag, Konto) & "|"
+    Betragswert = Betrag(Eintrag, Konto) & "|"
+    Projektnummer = Worksheets("Abgrenzung").Cells(Eintrag, 4).Value & "|"
+    GegenkontoNr = "|"
+    KST = Worksheets("Abgrenzung").Cells(Eintrag, 2).Value & "|"
+    Projektaufgabennr = "|"
+    Gegenkontoart = "Sachkonto|"
+    KundenKuerzel = Kuerzel(Eintrag)
+    Gesch‰ftsbuchungsgruppe = "|"
+    Produktbuchungsgruppe = "|"
+    Projektpostenart = "|"
+    Zlgcode = "|"
+    Waehrungscode = "|"
+    ICCode = "|"
+    MwStGBG = "|"
+    MwStPBG = ""
+        
+    Buchungssatz = Buchungsdatum & Belegdatum & Belegart & BelegNr & ExtBelegNr & Kontoart & KontoNr & Beschreibungstext & Betragswert & Projektnummer & GegenkontoNr & KST & Projektaufgabennr & Gegenkontoart & KundenKuerzel & Gesch‰ftsbuchungsgruppe & Produktbuchungsgruppe & Projektpostenart & Zlgcode & Waehrungscode & ICCode & MwStGBG & MwStPBG
+    
+    
+End Function
+
+Function Belegnummer(Eintrag)
+    Konto = Worksheets("Abgrenzung").Cells(Eintrag, 6).Value
+    Nummer = Worksheets("Abgrenzung").Cells(Eintrag, 1).Value
+    
+    If Konto = KontoForderungPOC Then
+        UAoPR = "UA "
+    Else
+        UAoPR = "PRAP "
+    End If
+    
+    MoJaNu = Monat & "." & Jahr & " - " & Nummer
+    
+    Belegnummer = UAoPR & MoJaNu
+        
+End Function
+
+Function Beschreibung(Eintrag, Konto)
+    Job = Worksheets("Abgrenzung").Cells(Eintrag, 4).Value & "-"
+    Betragswert = Betrag(Eintrag, Konto)
+    
+    Select Case Konto
+    
+        Case KontoForderungPRAP '1215
+            UAoPR = "PRAP-"
+            Bewegung1215 = Bewegung1215 + Betragswert
+            If Betragswert > 0 Then
+                AbgrAufl = "(Auflˆsung)"
+            Else
+                AbgrAufl = "(Abgrenzung)"
+            End If
+        
+        Case KontoForderungPOC '1210
+            UAoPR = "UA-"
+            Bewegung1210 = Bewegung1210 + Betragswert
+                If Betragswert > 0 Then
+                    AbgrAufl = "(Abgrenzung)"
+                Else
+                    AbgrAufl = "(Auflˆsung)"
+                End If
+                    
+        Case KontoErloesePRAP '4007
+            UAoPR = "PRAP-"
+                If Betragswert < 0 Then
+                    AbgrAufl = "(Auflˆsung)"
+                Else
+                    AbgrAufl = "(Abgrenzung)"
+                End If
+        
+        Case KontoReinmargeAbgrenzung '4025
+            UAoPR = "UA-"
+                If Betragswert < 0 Then
+                    AbgrAufl = "(Abgrenzung)"
+                Else
+                    AbgrAufl = "(Auflˆsung)"
+                End If
+    End Select
+             
+    Beschreibung = UAoPR & Job & AbgrAufl
+    
+End Function
+
+Function Betrag(Eintrag, Konto)
+    Betragswert = Worksheets("Abgrenzung").Cells(Eintrag, Monat + 7).Value
+    If CInt(Konto) = KontoErloesePRAP Or CInt(Konto) = KontoReinmargeAbgrenzung Then
+        Betrag = Betragswert * -1
+    Else
+        Betrag = Betragswert
+    End If
+    
+End Function
+
+Function Kuerzel(Eintrag)
+    Projektnummer = Worksheets("Abgrenzung").Cells(Eintrag, 4).Value
+    Kuerzel = Left(Projektnummer, InStrRev(Projektnummer, "-") - 1)
+    
+End Function
+
+Sub GenTxt()
+    Set fs = CreateObject("Scripting.FileSystemObject")
+    Set Text = fs.CreateTextFile("C:\users\Stephan\Desktop\" & Filename)
+    Text.WriteLine ("Buchungsdatum|Belegdatum|Belegart|Belegnr.|Externe Belegnummer|Kontoart|Kontonr.|Beschreibung|Betrag|Projektnummer|Gegenkontonr.|Kostenstelle Code|Projektaufgabennr.|Gegenkontoart|Shortcutdimensionscode 2|Gesch‰ftsbuchungsgruppe|Produktbuchungsgruppe|Projekt Postenart|Zlg.-Bedingungscode|W‰hrungscode|Intercompany Code|MwSt.-Gesch‰ftsbuchungsgruppe|MwSt.-Produktbuchungsgruppe")
+    Text.Close
+End Sub
+
+Sub AddLine(BuSa)
+    Datei = "C:\users\Stephan\Desktop\" & Filename
+    intFF = FreeFile
+    Open Datei For Append As #intFF
+        Print #intFF, BuSa
+    Close #intFF
+End Sub
+
